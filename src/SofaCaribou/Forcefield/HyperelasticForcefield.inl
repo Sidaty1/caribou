@@ -162,7 +162,7 @@ void HyperelasticForcefield<Element>::addForce(
                 }
             }
         }
-        if (element_id == 0) std::cout << "final nodal forces" << nodal_forces << "\n";
+        //if (element_id == 0) std::cout << "final nodal forces" << nodal_forces << "\n";
 
         for (size_t i = 0; i < NumberOfNodesPerElement; ++i) {
             for (size_t j = 0; j < Dimension; ++j) {
@@ -538,7 +538,7 @@ void HyperelasticForcefield<Element>::assemble_stiffness(const Eigen::MatrixBase
         }
     }
     p_K.setFromTriplets(triplets.begin(), triplets.end());
-    std::cout << p_K.row(0) << "\n";
+    //std::cout << p_K.row(0) << "\n";
     sofa::helper::AdvancedTimer::stepEnd("HyperelasticForcefield::update_stiffness");
 
     K_is_up_to_date = true;

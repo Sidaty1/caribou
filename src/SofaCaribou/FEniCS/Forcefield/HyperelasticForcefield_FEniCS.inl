@@ -15,9 +15,9 @@ DISABLE_ALL_WARNINGS_END
 #include <omp.h>
 
 #include <iostream>
-//#include <SofaCaribou/FEniCS/Material/SaintVenantKirchhoff_Tetra.h>
-//#include <SofaCaribou/FEniCS/Material/SaintVenantKirchhoff_Tetra_Order2.h>
-//#include <SofaCaribou/FEniCS/Material/SaintVenantKirchhoff_Hexa.h>
+#include <SofaCaribou/FEniCS/Material/SaintVenantKirchhoff_Tetra.h>
+#include <SofaCaribou/FEniCS/Material/SaintVenantKirchhoff_Tetra_Order2.h>
+#include <SofaCaribou/FEniCS/Material/SaintVenantKirchhoff_Hexa.h>
 #include <SofaCaribou/FEniCS/Material/SaintVenantKirchhoff_Hexa_Order2.h>
 
 #endif
@@ -121,14 +121,10 @@ void HyperelasticForcefield_FEniCS<Element>::addForce(
 
     // Compute the displacement with respect to the rest position
     const auto u =  X - X0;
-//    const ufcx_integral *integral =
-//        form_SaintVenantKirchhoff_Tetra_F->integrals(ufcx_integral_type::cell)[0];
-//    const ufcx_integral *integral =
-//        form_SaintVenantKirchhoff_Tetra_Order2_F->integrals(ufcx_integral_type::cell)[0];
-//    const ufcx_integral *integral =
-//        form_SaintVenantKirchhoff_Hexa_F->integrals(ufcx_integral_type::cell)[0];
-    const ufcx_integral *integral =
-        form_SaintVenantKirchhoff_Hexa_Order2_F->integrals(ufcx_integral_type::cell)[0];
+    //const ufcx_integral *integral = form_SaintVenantKirchhoff_Tetra_F->integrals(ufcx_integral_type::cell)[0];
+    const ufcx_integral *integral =form_SaintVenantKirchhoff_Tetra_Order2_F->integrals(ufcx_integral_type::cell)[0];
+    //const ufcx_integral *integral = form_SaintVenantKirchhoff_Hexa_F->integrals(ufcx_integral_type::cell)[0];
+    //const ufcx_integral *integral = form_SaintVenantKirchhoff_Hexa_Order2_F->integrals(ufcx_integral_type::cell)[0];
     const double constants[2] = {3000, 0.3};
 
     sofa::helper::AdvancedTimer::stepBegin("HyperelasticForcefield_FEniCS::addForce");
@@ -158,7 +154,7 @@ void HyperelasticForcefield_FEniCS<Element>::addForce(
         integral->tabulate_tensor_float64(nodal_forces.data(), coefficients.data(), constants, current_nodes_position.data(), nullptr, nullptr);
 //        if (element_id == 0) std::cout << "final nodal forces" << nodal_forces << "\n";
 
-        std::cout << "final nodal forces" << nodal_forces << "\n";
+        //std::cout << "final nodal forces" << nodal_forces << "\n";
 
 
 
@@ -441,14 +437,10 @@ void HyperelasticForcefield_FEniCS<Element>::assemble_stiffness(const Eigen::Mat
 
 
     // Get the single cell integral
-//    const ufcx_integral *integral =
-//        form_SaintVenantKirchhoff_Tetra_J->integrals(ufcx_integral_type::cell)[0];
-//    const ufcx_integral *integral =
-//        form_SaintVenantKirchhoff_Tetra_Order2_J->integrals(ufcx_integral_type::cell)[0];
-//    const ufcx_integral *integral =
-//        form_SaintVenantKirchhoff_Hexa_J->integrals(ufcx_integral_type::cell)[0];
-    const ufcx_integral *integral =
-        form_SaintVenantKirchhoff_Hexa_Order2_J->integrals(ufcx_integral_type::cell)[0];
+    //const ufcx_integral *integral = form_SaintVenantKirchhoff_Tetra_J->integrals(ufcx_integral_type::cell)[0];
+    const ufcx_integral *integral = form_SaintVenantKirchhoff_Tetra_Order2_J->integrals(ufcx_integral_type::cell)[0];
+    //const ufcx_integral *integral = form_SaintVenantKirchhoff_Hexa_J->integrals(ufcx_integral_type::cell)[0];
+    //const ufcx_integral *integral = form_SaintVenantKirchhoff_Hexa_Order2_J->integrals(ufcx_integral_type::cell)[0];
 #pragma omp parallel for if (enable_multithreading)
     for (int element_id = 0; element_id < static_cast<int>(nb_elements); ++element_id) {
         // Fetch the node indices of the element
@@ -497,7 +489,7 @@ void HyperelasticForcefield_FEniCS<Element>::assemble_stiffness(const Eigen::Mat
         }
     }
     p_K.setFromTriplets(triplets.begin(), triplets.end());
-    std::cout << p_K.row(0) << "\n";
+    //std::cout << p_K.row(0) << "\n";
     sofa::helper::AdvancedTimer::stepEnd("HyperelasticForcefield_FEniCS::update_stiffness");
 
     K_is_up_to_date = true;
